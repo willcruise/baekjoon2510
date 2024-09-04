@@ -1,1 +1,96 @@
-T = int(input())
+import sys
+from collections import defaultdict
+sys.stdin = open('input.txt', 'r')
+
+result = []
+
+T = int(sys.stdin.readline())
+
+for tests in range(T):
+    _ = sys.stdin.readline()
+    txtlen = int(sys.stdin.readline())
+    txt = list(map(int, sys.stdin.readline().split()))
+    p1len = int(sys.stdin.readline())
+    p1 = list(map(int, sys.stdin.readline().split()))
+    p2len = int(sys.stdin.readline())
+    p2 = list(map(int, sys.stdin.readline().split()))
+
+    p1ans = []
+    for startingindex in range(txtlen):
+        ans = []
+        startpoint = startingindex
+        for i in range(p1len):
+            sum = 0
+            fail = False
+            for e in range(startpoint, txtlen+i-p1len+1):
+                sum += txt[e]
+                if sum < p1[i]: continue
+                elif sum == p1[i]:
+                    ans.append([startpoint, e+1])
+                    startpoint = e+1
+                    break
+                else: 
+                    fail = True
+                    break
+
+            if fail: break  
+
+        if len(ans) == p1len: p1ans.append(ans)
+    print(p1ans)
+    result.append(str(len(p1ans)))
+
+    p2ans = []
+    for startingindex in range(txtlen):
+        ans = []
+        startpoint = startingindex
+        for i in range(p2len):
+            sum = 0
+            fail = False
+            for e in range(startpoint, txtlen+i-p2len+1):
+                sum += txt[e]
+                if sum < p2[i]: continue
+                elif sum == p2[i]:
+                    ans.append([startpoint, e+1])
+                    startpoint = e+1
+                    break
+                else: 
+                    fail = True
+                    break
+
+            if fail: break  
+
+        if len(ans) == p2len: p2ans.append(ans)
+    print(p2ans)
+
+    result.append(str(len(p2ans)))
+
+
+    for ans1 in range(len(p1ans)):
+        possn = []
+        for ans2 in range(len(p2ans)-1, -1, -1):
+            if p2ans[ans2][0][0] <= p1ans[ans1][p1len-1][1]: break
+            else: possn.append(sum(txt[p1ans[ans1][p1len-1][1]: p2ans[ans2][0][0]]))
+
+    ncnt = defaultdict(int)
+    for e in possn:
+        ncnt[e] += 1    
+               
+
+    result.append(str(n))    
+
+
+
+
+
+    
+print(' '.join(result))
+
+
+
+
+
+
+        
+
+
+
